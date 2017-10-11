@@ -127,7 +127,7 @@ void stackPop ( tStack* s ) {
 */
 	if(!stackEmpty(s))
 	{
-		//s->arr[s->top] = NULL; // Is this necessary?
+		s->arr[s->top] = 0; // For easier debuging
 		(s->top)--;
 	}
 }
