@@ -62,14 +62,11 @@ void untilLeftPar ( tStack* s, char* postExpr, unsigned* postLen ) {
 			stackPop(s); // Remove last operand in the stack
 			postExpr[*postLen] = topChar; // Add it to output string
 			(*postLen)++; // Increase counter
-			DEBUG_PRINT("[DBG] topChar='%c'\n",topChar);
-			DEBUG_PRINT("[DBG] changed %u to %u (Looking for left bracket)\n",(*postLen)-1,*postLen);
 			stackTop(s, &topChar);
 		}
 		
 		
 		stackPop(s); // Remove left bracket from the stack
-		DEBUG_PRINT("[DBG] removed '%c' from the stack\n",topChar);
 	}
 }
 
@@ -87,7 +84,6 @@ void doOperation ( tStack* s, char c, char* postExpr, unsigned* postLen ) {
 	if(stackEmpty(s)) // When stack is empty
 	{
 		stackPush(s, c); // Put operand in stack no matter what
-		DEBUG_PRINT("[DBG] putting '%c' on empty stack\n",c);
 		return;
 	}
 	
@@ -97,7 +93,6 @@ void doOperation ( tStack* s, char c, char* postExpr, unsigned* postLen ) {
 	if(topChar == '(') // If its left bracket
 	{
 		stackPush(s, c); // Put operand in stack no matter what
-		DEBUG_PRINT("[DBG] putting '%c' on empty stack because top was '(' \n",c);
 		return;		
 	}
 	
@@ -108,8 +103,7 @@ void doOperation ( tStack* s, char c, char* postExpr, unsigned* postLen ) {
 		case '-':
 			stackPop(s); // Remove last operand in the stack
 			postExpr[*postLen] = topChar; // Add it to output string
-			postLen++; // Increase counter
-			DEBUG_PRINT("[DBG] changed %u to %u (trying to add + or -)\n",(*postLen)-1,*postLen);
+			(*postLen)++; // Increase counter
 			doOperation(s, c, postExpr, postLen); // Repeat the cycle			
 			break;
 			
@@ -120,14 +114,12 @@ void doOperation ( tStack* s, char c, char* postExpr, unsigned* postLen ) {
 			{
 				stackPop(s); // Remove it
 				postExpr[*postLen] = topChar; // Add it to output string
-				postLen++; // Increase counter
-				DEBUG_PRINT("[DBG] changed %u to %u (trying to add * or / and high prior is on top)\n",(*postLen)-1,*postLen);
+				(*postLen)++; // Increase counter
 				doOperation(s, c, postExpr, postLen); // Repeat the cycle
 			}
 			else
 			{
 				stackPush(s, c); // Put operand in the stack
-				DEBUG_PRINT("[DBG] putting '%c' on stack (high prior)\n",c);
 			}
 			break;
 		
@@ -202,25 +194,21 @@ char* infix2postfix (const char* infExpr) {
 		free(postExpr); // Free the previous allocation
 		return NULL;
 	}
+	stackInit(s);
 	
 	// Processing characters from input string
 	char c;
 	for(int i = 0; (c = infExpr[i]) != '='; i++) // For each character untill "="
 	{
+		DEBUG_PRINT("[DBG]#processing: %c\n",c);
 		if(c == '+' || c == '-' || c == '*' || c == '/' || c == '(' || c == ')') // Check if character is operator
-		{
-			DEBUG_PRINT("[DBG] processing: %c\n",c);
+		{		
 			doOperation(s, c, postExpr, &postLen);
-			
-			// DEBUG
-			DEBUG_PRINT("[DBG] out[%u]=%s\n",postLen,postExpr);
-			DEBUG_PRINT("[DBG] stack=%s\n",s->arr);
 		}
 		else
 		{
 			postExpr[postLen] = c;
 			postLen++;
-			DEBUG_PRINT("[DBG] changed %u to %u (Processing operand)\n",postLen-1,postLen);
 		}
 	}
 	
@@ -232,7 +220,6 @@ char* infix2postfix (const char* infExpr) {
 		stackPop(s); // Remove last operand in the stack
 		postExpr[postLen] = topChar; // Add it to output string
 		postLen++; // Increase counter
-		DEBUG_PRINT("[DBG] changed %u to %u (Emptying stack at the end) [added: '%c'='%d']\n",postLen-1,postLen,topChar,topChar);
 	}
 	
 	
