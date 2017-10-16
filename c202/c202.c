@@ -1,3 +1,8 @@
+/*
+[IAL] Homework 1
+Author: Jiri Furda (xfurda00)
+*/
+
 
 /* ******************************* c202.c *********************************** */
 /*  Předmět: Algoritmy (IAL) - FIT VUT v Brně                                 */
@@ -61,7 +66,13 @@ void stackInit ( tStack* s ) {
 ** předpokládejte, že tato situace nenastane. 
 */
 
-	  solved = 0;                      /* V případě řešení, smažte tento řádek! */
+	if(s == NULL) // If the stack is not allocated
+	{
+		stackError(SERR_INIT); // Throw an error
+		return;
+	}
+	
+	s->top = -1; // Initialize top of the stack
 }
 
 int stackEmpty ( const tStack* s ) {
@@ -71,7 +82,7 @@ int stackEmpty ( const tStack* s ) {
 ** typu "if ( true ) b=true else b=false".
 */
 
-	  solved = 0;                      /* V případě řešení, smažte tento řádek! */
+	return (s->top == -1) ? 1 : 0; 
 }
 
 int stackFull ( const tStack* s ) {
@@ -84,7 +95,7 @@ int stackFull ( const tStack* s ) {
 ** Funkci implementujte jako jediný příkaz.
 */
 
-	  solved = 0;                      /* V případě řešení, smažte tento řádek! */
+	return (s->top == STACK_SIZE-1) ? 1 : 0; 
 }
 
 void stackTop ( const tStack* s, char* c ) {
@@ -97,8 +108,13 @@ void stackTop ( const tStack* s, char* c ) {
 ** Pro ověření, zda je zásobník prázdný, použijte dříve definovanou
 ** funkci stackEmpty.
 */
+	if(stackEmpty(s)) // If the stack is empty
+	{
+		stackError(SERR_TOP); // Throw an error
+		return;
+	}
 
-	  solved = 0;                      /* V případě řešení, smažte tento řádek! */
+	*c = s->arr[s->top]; // Put value of the emelent on top of the stack into pointer 'c'
 }
 
 
@@ -114,8 +130,11 @@ void stackPop ( tStack* s ) {
 ** jednoduchost neděláme.
 ** 
 */
-
-	  solved = 0;                      /* V případě řešení, smažte tento řádek! */
+	if(!stackEmpty(s)) // If the stack is not empty
+	{
+		s->arr[s->top] = 0; // For printing stack as string (easier debugging)
+		(s->top)--; // Decrease index of top of the stack
+	}
 }
 
 
@@ -127,8 +146,14 @@ void stackPush ( tStack* s, char c ) {
 ** Pro ověření, zda je zásobník plný, použijte dříve definovanou
 ** funkci stackFull.
 */
-
-	  solved = 0;                      /* V případě řešení, smažte tento řádek! */
+	if(stackFull(s)) // If the stack is full
+	{
+		stackError(SERR_PUSH); // Throw an error
+		return;
+	}
+	
+	(s->top)++; // Increase index of the top of the stack
+	s->arr[s->top] = c; // Add value to the stack
 }
 
 /* Konec c202.c */
