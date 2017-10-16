@@ -1,9 +1,3 @@
-/*
-[IAL] Homework 1
-Author: Jiri Furda (xfurda00)
-*/
-
-
 /* c206.c **********************************************************}
 {* Téma: Dvousměrně vázaný lineární seznam
 **
@@ -56,6 +50,12 @@ Author: Jiri Furda (xfurda00)
 ** v algoritmickém jazyce Pascalovského typu implemenovány jako
 ** procedury (v jazyce C procedurám odpovídají funkce vracející typ void).
 **/
+
+/*
+[IAL] Homework 1
+Author: Jiri Furda (xfurda00)
+*/
+
 
 #include "c206.h"
 
