@@ -93,14 +93,14 @@ void DLDisposeList (tDLList *L) {
 ** se nacházel po inicializaci. Rušené prvky seznamu budou korektně
 ** uvolněny voláním operace free. 
 **/
-	struct tDLElem *element = L->First; // Set current element to the first of the list
+	struct tDLElem *element = L->First;			// Set current element to the first of the list
 	struct tDLElem *nextElement;
 	
-	while(element != NULL) // For each element in the list
+	while(element != NULL)									// For each element in the list
 	{
-		nextElement = element->rptr; // Get pointer of the next element
-		free(element); // Free the memory of the current element
-		element = nextElement; // Move to next element
+		nextElement = element->rptr; 					// Get pointer of the next element
+		free(element); 												// Free the memory of the current element
+		element = nextElement; 								// Move to next element
 	}
 
 	// Set default values to list attributes once again
@@ -117,25 +117,25 @@ void DLInsertFirst (tDLList *L, int val) {
 **
 **/
 
-	struct tDLElem *wasFirst = L->First; // The element that used to be first
-	struct tDLElem *newElement = malloc(sizeof(struct tDLElem)); // Allocate memory for new element
+	struct tDLElem *wasFirst = L->First;															// The element that used to be first
+	struct tDLElem *newElement = malloc(sizeof(struct tDLElem));			// Allocate memory for new element
 	
-	if(newElement == NULL) // If allocation wasn't successful
+	if(newElement == NULL)			// If allocation wasn't successful
 	{
-		DLError(); // Throw error
+		DLError();								// Throw error
 		return;
 	}
 		
-	newElement->data = val; // Set value of the new element
-	newElement->lptr = NULL; // There is no left element if this one is the first in the list
-	newElement->rptr = wasFirst; // Link the element that used to be first to the right from the new one
+	newElement->data = val;							// Set value of the new element
+	newElement->lptr = NULL;						// There is no left element if this one is the first in the list
+	newElement->rptr = wasFirst;				// Link the element that used to be first to the right from the new one
 	
-	if(wasFirst == NULL) // Is it an empty list?
-		L->Last = newElement; // New element is both first and last
+	if(wasFirst == NULL)								// If it is was empty list
+		L->Last = newElement;							// New element is both first and last
 	else
-		wasFirst->lptr = newElement; // Link the new element to the left from the previous first element 
+		wasFirst->lptr = newElement;			// Link the new element to the left from the previous first element 
 		
-	L->First = newElement; // Change list attribute to point to the new first element
+	L->First = newElement;							// Change list attribute to point to the new first element
 }
 
 void DLInsertLast(tDLList *L, int val) {
@@ -145,25 +145,25 @@ void DLInsertLast(tDLList *L, int val) {
 ** volá funkci DLError().
 **/ 	
 
-	struct tDLElem *wasLast = L->Last;
-	struct tDLElem *newElement = malloc(sizeof(struct tDLElem));
+	struct tDLElem *wasLast = L->Last;																// The element that used to be last
+	struct tDLElem *newElement = malloc(sizeof(struct tDLElem));			// Allocate memory for new element
 	
-	if(newElement == NULL)
+	if(newElement == NULL)			// If allocation wasn't successful
 	{
-		DLError();
+		DLError();								// Throw error
 		return;
 	}
 		
-	newElement->data = val;
-	newElement->lptr = wasLast;
-	newElement->rptr = NULL;
+	newElement->data = val;							// Set value of the new element
+	newElement->lptr = wasLast;					// Link the element that used to be last to the left from the new one
+	newElement->rptr = NULL;						// There is no right element if this one is the last in the list
 	
-	if(wasLast == NULL) // Is it an empty list?
-		L->First = newElement; // New element is both first and last
+	if(wasLast == NULL)								// If it is was empty list
+		L->First = newElement;					// New element is both first and last
 	else
-		wasLast->rptr = newElement; // Link second last element to last (newElement) 
+		wasLast->rptr = newElement;			// Link the new element to the right from the previous last element 
 		
-	L->Last = newElement;
+	L->Last = newElement;							// Change list attribute to point to the new last element
 }
 
 void DLFirst (tDLList *L) {
@@ -173,7 +173,7 @@ void DLFirst (tDLList *L) {
 ** aniž byste testovali, zda je seznam L prázdný.
 **/
 
-	L->Act = L->First; // Mark the first element as active
+	L->Act = L->First;		// Mark the first element as active
 }
 
 void DLLast (tDLList *L) {
@@ -183,7 +183,7 @@ void DLLast (tDLList *L) {
 ** aniž byste testovali, zda je seznam L prázdný.
 **/
 	
-	L->Act = L->Last; // Mark the last element as active
+	L->Act = L->Last;			// Mark the last element as active
 }
 
 void DLCopyFirst (tDLList *L, int *val) {
@@ -192,9 +192,9 @@ void DLCopyFirst (tDLList *L, int *val) {
 ** Pokud je seznam L prázdný, volá funkci DLError().
 **/
 
-	if(L->First == NULL) // If the list is empty
+	if(L->First == NULL)			// If the list is empty
 	{
-		DLError(); // Throw an error
+		DLError();							// Throw an error
 		return;
 	}
 	
@@ -207,9 +207,9 @@ void DLCopyLast (tDLList *L, int *val) {
 ** Pokud je seznam L prázdný, volá funkci DLError().
 **/
 
-	if(L->Last == NULL) // If the list is empty
+	if(L->Last == NULL)				// If the list is empty
 	{
-		DLError(); // Throw an error
+		DLError();							// Throw an error
 		return;
 	}
 	
@@ -222,20 +222,23 @@ void DLDeleteFirst (tDLList *L) {
 ** se ztrácí. Pokud byl seznam L prázdný, nic se neděje.
 **/
 
-	if(L->First == NULL) // If the list is empty
+	if(L->First == NULL)														// If the list is empty
 		return;
 
-	if(L->Act == L->First) // If activate element is about to be destroyed
-		L->Act = NULL;
+	if(L->Act == L->First)													// If activate element is about to be destroyed
+		L->Act = NULL;																// Disable the active attribut
 
-	struct tDLElem *newFirst = L->First->rptr;
-	free(L->First); // Free the memory of deleted element
-	L->First = newFirst;
+	struct tDLElem *newFirst = L->First->rptr;			// Element that is going to be first
+	free(L->First);																	// Free the memory of deleted element
+	L->First = newFirst;														// Change the list attribute poining to first element
 	
-	if(newFirst == NULL) // If there is only one element left after the deletion
-		L->Last = NULL; // Disable list attribute pointing to last element
+	if(newFirst == NULL)														// If there is not any element left after the deletion
+	{
+		L->First = NULL;															// Disable list attribute pointing to first element	
+		L->Last = NULL;																// Disable list attribute pointing to last element	
+	}
 	else
-		L->First->lptr = NULL; // Avoiding segmenatation fault
+		newFirst->lptr = NULL;												// There is not any element on the left side from the new first
 	
 }	
 
@@ -245,21 +248,24 @@ void DLDeleteLast (tDLList *L) {
 ** aktivita seznamu se ztrácí. Pokud byl seznam L prázdný, nic se neděje.
 **/ 
 
-	if(L->Last == NULL) // If the list is empty
+	if(L->Last == NULL)														// If the list is empty
 		return;
 	
-	if(L->Act == L->Last) // If active element is about to be destroyed
-		L->Act = NULL;
+	if(L->Act == L->Last)													// If active element is about to be destroyed
+		L->Act = NULL;															// Disable the active attribut
 
-	struct tDLElem *newLast = L->Last->lptr;
-	free(L->Last); // Free the memory of deleted element
-	L->Last = newLast;
-	L->Last->rptr = NULL;
+	struct tDLElem *newLast = L->Last->lptr;			// Element that is going to be last
+	free(L->Last);																// Free the memory of deleted element
+	L->Last = newLast;														// Change the list attribute poining to last element
 	
-	if(newLast == NULL) // If there is only one element left after the deletion
-		L->First = NULL; // Disable first attribute pointing to last element
+	
+	if(newLast == NULL)														// If there is not any element left after the deletion
+	{
+		L->First = NULL;														// Disable list attribute pointing to first element	
+		L->Last = NULL;															// Disable list attribute pointing to last element	
+	}
 	else
-		L->First->lptr = NULL; // Avoiding segmenatation fault
+		newLast->rptr = NULL;												// There is not any element on the right side from the new last
 }
 
 void DLPostDelete (tDLList *L) {
@@ -269,18 +275,18 @@ void DLPostDelete (tDLList *L) {
 ** posledním prvkem seznamu, nic se neděje.
 **/
 
-	if(L->Act == NULL || L->Last == L->Act)
+	if(L->Act == NULL || L->Last == L->Act)					// If there is no active element or the active is also last one
 		return;
 		
-	struct tDLElem *delElement = L->Act->rptr; // Element to be deleted
+	struct tDLElem *delElement = L->Act->rptr;			// Element to be deleted
 	
-	if(delElement->rptr == NULL) // If the deleted element was last in the list
+	if(delElement->rptr == NULL)										// If the deleted element was last in the list
 	{
-		L->Last =	L->Act;
-		L->Last->rptr =	NULL; // WATCHOUT!!! CHECK LATER!!! EVERYTIME YOU CHANGE LAST OR FIRST BE SURE TO DESTROY L/R POINTER IN ELEMENT
+		L->Last =	L->Act;															// Change the list attribute poining to last element
+		L->Last->rptr =	NULL;													// TO-DO WATCHOUT!!! CHECK LATER!!! EVERYTIME YOU CHANGE LAST OR FIRST BE SURE TO DESTROY L/R POINTER IN ELEMENT
 	}
 		
-	L->Act->rptr = delElement->rptr; // Connect the active element to the next after deleted element
+	L->Act->rptr = delElement->rptr; 								// Connect the active element to the next after the deleted element
 	free(delElement);
 }
 
@@ -291,18 +297,18 @@ void DLPreDelete (tDLList *L) {
 ** prvním prvkem seznamu, nic se neděje.
 **/
 	
-	if(L->Act == NULL || L->First == L->Act)
+	if(L->Act == NULL || L->First == L->Act)				// If there is no active element or the active is also first one
 		return;
 		
-	struct tDLElem *delElement = L->Act->lptr; // Element to be deleted
+	struct tDLElem *delElement = L->Act->lptr;			// Element to be deleted
 	
-	if(delElement->lptr == NULL) // If the deleted element was last in the list
+	if(delElement->lptr == NULL)										// If the deleted element was last in the list
 	{
-		L->First =	L->Act;
-		L->First->lptr = NULL; // WATCHOUT!!! CHECK LATER!!! EVERYTIME YOU CHANGE LAST OR FIRST BE SURE TO DESTROY L/R POINTER IN ELEMENT
+		L->First =	L->Act;														// Change the list attribute poining to first element
+		L->First->lptr = NULL;												// TO-DO WATCHOUT!!! CHECK LATER!!! EVERYTIME YOU CHANGE LAST OR FIRST BE SURE TO DESTROY L/R POINTER IN ELEMENT
 	}
 		
-	L->Act->lptr = delElement->lptr; // Connect the active element to the next after deleted element
+	L->Act->lptr = delElement->lptr;								// Connect the active element to the next before the deleted element
 	free(delElement);
 }
 
