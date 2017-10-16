@@ -1,3 +1,8 @@
+/*
+[IAL] Homework 1
+Author: Jiri Furda (xfurda00)
+*/
+
 
 /* ******************************* c204.c *********************************** */
 /*  Předmět: Algoritmy (IAL) - FIT VUT v Brně                                 */
@@ -31,10 +36,13 @@
 **
 **/
 
+// For debugging
+//#define DEBUG_PRINT printf
+#define DEBUG_PRINT(...)
+
 #include "c204.h"
 
 int solved;
-
 
 /*
 ** Pomocná funkce untilLeftPar.
@@ -49,7 +57,22 @@ int solved;
 ** nadeklarovat a používat pomocnou proměnnou typu char.
 */
 void untilLeftPar ( tStack* s, char* postExpr, unsigned* postLen ) {
-
+	if(!stackEmpty(s)) // TO-DO
+	{
+		char topChar;
+		stackTop(s, &topChar);
+		while(topChar != '(')
+		{
+			
+			stackPop(s); // Remove last operand in the stack
+			postExpr[*postLen] = topChar; // Add it to output string
+			(*postLen)++; // Increase counter
+			stackTop(s, &topChar);
+		}
+		
+		
+		stackPop(s); // Remove left bracket from the stack
+	}
 }
 
 /*
@@ -62,8 +85,57 @@ void untilLeftPar ( tStack* s, char* postExpr, unsigned* postLen ) {
 ** výrazu a taktéž ukazatel na první volné místo, do kterého se má zapisovat, 
 ** představuje parametr postLen, výstupním polem znaků je opět postExpr.
 */
-void doOperation ( tStack* s, char c, char* postExpr, unsigned* postLen ) {
-
+void doOperation ( tStack* s, char c, char* postExpr, unsigned* postLen ) {		
+	if(stackEmpty(s)) // When stack is empty
+	{
+		stackPush(s, c); // Put operand in stack no matter what
+		return;
+	}
+	
+	// Getting an operand on the top of the stack
+	char topChar;
+	stackTop(s, &topChar); 
+	if(topChar == '(') // If its left bracket
+	{
+		stackPush(s, c); // Put operand in stack no matter what
+		return;		
+	}
+	
+	switch(c)
+	{
+		// Cases with low priority operands
+		case '+':
+		case '-':
+			stackPop(s); // Remove last operand in the stack
+			postExpr[*postLen] = topChar; // Add it to output string
+			(*postLen)++; // Increase counter
+			doOperation(s, c, postExpr, postLen); // Repeat the cycle			
+			break;
+			
+		// Cases with high priority operands
+		case '*':
+		case '/':
+			if(topChar == '*' || topChar == '/') // If there is an operator with higher or the same priority on the top of the stack
+			{
+				stackPop(s); // Remove it
+				postExpr[*postLen] = topChar; // Add it to output string
+				(*postLen)++; // Increase counter
+				doOperation(s, c, postExpr, postLen); // Repeat the cycle
+			}
+			else
+			{
+				stackPush(s, c); // Put operand in the stack
+			}
+			break;
+		
+		// Cases with brackets
+		case '(':
+			stackPush(s, c);
+			break;
+		case ')':
+			untilLeftPar(s, postExpr, postLen);
+			break;
+	}
 }
 
 /* 
@@ -111,9 +183,58 @@ void doOperation ( tStack* s, char c, char* postExpr, unsigned* postLen ) {
 ** řetězce konstantu NULL.
 */
 char* infix2postfix (const char* infExpr) {
+	
+	// Creating output string variables
+	unsigned postLen = 0;
+	char* postExpr = malloc(sizeof(char)*MAX_LEN);
+	if(postExpr == NULL) // Check if allocation was successful
+		return NULL;
 
-  solved = 0;                        /* V případě řešení smažte tento řádek! */
-  return NULL;                /* V případě řešení můžete smazat tento řádek. */
+	// Creating stack for opertators
+	//STACK_SIZE = ; // What the fuck should I do with this?
+	tStack* s;
+	s = (tStack*) malloc(sizeof(tStack));
+	if(s == NULL) // Check if allocation was successful
+	{
+		free(postExpr); // Free the previous allocation
+		return NULL;
+	}
+	stackInit(s);
+	
+	// Processing characters from input string
+	char c;
+	for(int i = 0; (c = infExpr[i]) != '='; i++) // For each character untill "="
+	{
+		DEBUG_PRINT("[DBG]#processing: %c\n",c);
+		if(c == '+' || c == '-' || c == '*' || c == '/' || c == '(' || c == ')') // Check if character is operator
+		{		
+			doOperation(s, c, postExpr, &postLen);
+		}
+		else
+		{
+			postExpr[postLen] = c;
+			postLen++;
+		}
+	}
+	
+	// Print operands from stack and empty it
+	while(!stackEmpty(s))
+	{
+		char topChar;
+		stackTop(s, &topChar);
+		stackPop(s); // Remove last operand in the stack
+		postExpr[postLen] = topChar; // Add it to output string
+		postLen++; // Increase counter
+	}
+	
+	
+	//printf("[DBG] adding = at position %d\n",postLen);
+	postExpr[postLen++] = '=';
+	postExpr[postLen] = '\0';
+	
+	free(s);
+	// TO-DO free postExpr
+	return postExpr;
 }
 
 /* Konec c204.c */
