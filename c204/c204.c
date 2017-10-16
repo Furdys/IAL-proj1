@@ -1,3 +1,8 @@
+/*
+[IAL] Homework 1
+Author: Jiri Furda (xfurda00)
+*/
+
 
 /* ******************************* c204.c *********************************** */
 /*  Předmět: Algoritmy (IAL) - FIT VUT v Brně                                 */
@@ -224,7 +229,8 @@ char* infix2postfix (const char* infExpr) {
 	
 	
 	//printf("[DBG] adding = at position %d\n",postLen);
-	postExpr[postLen] = '=';
+	postExpr[postLen++] = '=';
+	postExpr[postLen] = '\0';
 	
 	free(s);
 	// TO-DO free postExpr
