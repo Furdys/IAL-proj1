@@ -1,3 +1,8 @@
+/*
+[IAL] Homework 1
+Author: Jiri Furda (xfurda00)
+*/
+
 
 /* ******************************* c202.c *********************************** */
 /*  Předmět: Algoritmy (IAL) - FIT VUT v Brně                                 */
@@ -61,13 +66,13 @@ void stackInit ( tStack* s ) {
 ** předpokládejte, že tato situace nenastane. 
 */
 
-	if(s == NULL)
+	if(s == NULL) // If the stack is not allocated
 	{
-		stackError(SERR_INIT);
+		stackError(SERR_INIT); // Throw an error
 		return;
 	}
 	
-	s->top = -1;
+	s->top = -1; // Initialize top of the stack
 }
 
 int stackEmpty ( const tStack* s ) {
@@ -103,13 +108,13 @@ void stackTop ( const tStack* s, char* c ) {
 ** Pro ověření, zda je zásobník prázdný, použijte dříve definovanou
 ** funkci stackEmpty.
 */
-	if(stackEmpty(s))
+	if(stackEmpty(s)) // If the stack is empty
 	{
-		stackError(SERR_TOP);
+		stackError(SERR_TOP); // Throw an error
 		return;
 	}
 
-	*c = s->arr[s->top];
+	*c = s->arr[s->top]; // Put value of the emelent on top of the stack into pointer 'c'
 }
 
 
@@ -125,10 +130,10 @@ void stackPop ( tStack* s ) {
 ** jednoduchost neděláme.
 ** 
 */
-	if(!stackEmpty(s))
+	if(!stackEmpty(s)) // If the stack is not empty
 	{
-		s->arr[s->top] = 0; // For easier debuging
-		(s->top)--;
+		s->arr[s->top] = 0; // For printing stack as string (easier debugging)
+		(s->top)--; // Decrease index of top of the stack
 	}
 }
 
@@ -141,14 +146,14 @@ void stackPush ( tStack* s, char c ) {
 ** Pro ověření, zda je zásobník plný, použijte dříve definovanou
 ** funkci stackFull.
 */
-	if(stackFull(s))
+	if(stackFull(s)) // If the stack is full
 	{
-		stackError(SERR_PUSH);
+		stackError(SERR_PUSH); // Throw an error
 		return;
 	}
 	
-	(s->top)++;
-	s->arr[s->top] = c;
+	(s->top)++; // Increase index of the top of the stack
+	s->arr[s->top] = c; // Add value to the stack
 }
 
 /* Konec c202.c */
