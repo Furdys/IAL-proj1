@@ -30,15 +30,6 @@
 **
 **/
 
-/*
-[IAL] Homework 1
-Author: Jiri Furda (xfurda00)
-*/
-
-// For debugging
-//#define DEBUG_PRINT printf
-#define DEBUG_PRINT(...)
-
 #include "c204.h"
 
 int solved;
