@@ -31,11 +31,6 @@
 **
 **/
 
-/*
-[IAL] Homework 1
-Author: Jiri Furda (xfurda00)
-*/
-
 #include "c202.h"
 
 int STACK_SIZE = MAX_STACK;
