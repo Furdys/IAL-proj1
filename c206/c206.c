@@ -51,12 +51,6 @@
 ** procedury (v jazyce C procedurám odpovídají funkce vracející typ void).
 **/
 
-/*
-[IAL] Homework 1
-Author: Jiri Furda (xfurda00)
-*/
-
-
 #include "c206.h"
 
 int solved;
