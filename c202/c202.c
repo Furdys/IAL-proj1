@@ -36,7 +36,7 @@
 int STACK_SIZE = MAX_STACK;
 int solved;
 
-void stackError ( int error_code ){
+void stackError (int error_code) {
 /*   ----------
 ** Vytiskne upozornění, že došlo k chybě při práci se zásobníkem.
 **
@@ -49,7 +49,7 @@ void stackError ( int error_code ){
 	err_flag = 1;
 }
 
-void stackInit ( tStack* s ) {
+void stackInit (tStack* s) {
 /*   ---------
 ** Provede inicializaci zásobníku - nastaví vrchol zásobníku.
 ** Hodnoty ve statickém poli neupravujte - po inicializaci zásobníku
@@ -69,7 +69,7 @@ void stackInit ( tStack* s ) {
 	s->top = -1;									// Initialize top of the stack
 }
 
-int stackEmpty ( const tStack* s ) {
+int stackEmpty (const tStack* s) {
 /*  ----------
 ** Vrací nenulovou hodnotu, pokud je zásobník prázdný, jinak vrací hodnotu 0.
 ** Funkci implementujte jako jediný příkaz. Vyvarujte se zejména konstrukce
@@ -79,7 +79,7 @@ int stackEmpty ( const tStack* s ) {
 	return (s->top == -1) ? 1 : 0; 
 }
 
-int stackFull ( const tStack* s ) {
+int stackFull (const tStack* s) {
 /*  ---------
 ** Vrací nenulovou hodnotu, je-li zásobník plný, jinak vrací hodnotu 0.
 ** Dejte si zde pozor na častou programátorskou chybu "o jedničku"
@@ -92,7 +92,7 @@ int stackFull ( const tStack* s ) {
 	return (s->top == STACK_SIZE-1) ? 1 : 0; 
 }
 
-void stackTop ( const tStack* s, char* c ) {
+void stackTop (const tStack* s, char* c) {
 /*   --------
 ** Vrací znak z vrcholu zásobníku prostřednictvím parametru c.
 ** Tato operace ale prvek z vrcholu zásobníku neodstraňuje.
@@ -112,7 +112,7 @@ void stackTop ( const tStack* s, char* c ) {
 }
 
 
-void stackPop ( tStack* s ) {
+void stackPop (tStack* s) {
 /*   --------
 ** Odstraní prvek z vrcholu zásobníku. Pro ověření, zda je zásobník prázdný,
 ** použijte dříve definovanou funkci stackEmpty.
@@ -132,7 +132,7 @@ void stackPop ( tStack* s ) {
 }
 
 
-void stackPush ( tStack* s, char c ) {
+void stackPush (tStack* s, char c) {
 /*   ---------
 ** Vloží znak na vrchol zásobníku. Pokus o vložení prvku do plného zásobníku
 ** je nekorektní a ošetřete ho voláním procedury stackError(SERR_PUSH).
