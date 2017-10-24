@@ -46,7 +46,7 @@ int solved;
 ** Aby se minimalizoval počet přístupů ke struktuře zásobníku, můžete zde
 ** nadeklarovat a používat pomocnou proměnnou typu char.
 */
-void untilLeftPar ( tStack* s, char* postExpr, unsigned* postLen ) {
+void untilLeftPar (tStack* s, char* postExpr, unsigned* postLen) {
 	if(!stackEmpty(s)) // TO-DO minimalize access to stack
 	{
 		char topChar;
@@ -75,7 +75,7 @@ void untilLeftPar ( tStack* s, char* postExpr, unsigned* postLen ) {
 ** výrazu a taktéž ukazatel na první volné místo, do kterého se má zapisovat, 
 ** představuje parametr postLen, výstupním polem znaků je opět postExpr.
 */
-void doOperation ( tStack* s, char c, char* postExpr, unsigned* postLen ) {		
+void doOperation (tStack* s, char c, char* postExpr, unsigned* postLen) {		
 	if(stackEmpty(s))																// When stack is empty
 	{
 		stackPush(s, c);															// Put operand in stack no matter what
