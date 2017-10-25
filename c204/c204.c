@@ -1,3 +1,4 @@
+
 /* ******************************* c204.c *********************************** */
 /*  Předmět: Algoritmy (IAL) - FIT VUT v Brně                                 */
 /*  Úkol: c204 - Převod infixového výrazu na postfixový (s využitím c202)     */
@@ -34,6 +35,7 @@
 
 int solved;
 
+
 /*
 ** Pomocná funkce untilLeftPar.
 ** Slouží k vyprázdnění zásobníku až po levou závorku, přičemž levá závorka
@@ -46,22 +48,22 @@ int solved;
 ** Aby se minimalizoval počet přístupů ke struktuře zásobníku, můžete zde
 ** nadeklarovat a používat pomocnou proměnnou typu char.
 */
-void untilLeftPar (tStack* s, char* postExpr, unsigned* postLen) {
-	if(!stackEmpty(s)) // TO-DO minimalize access to stack
+void untilLeftPar ( tStack* s, char* postExpr, unsigned* postLen ) {
+	if(!stackEmpty(s))
 	{
 		char topChar;
 		stackTop(s, &topChar);
 		while(topChar != '(')
 		{
 			
-			stackPop(s);											// Remove last operand in the stack
-			postExpr[*postLen] = topChar;			// Add it to output string
-			(*postLen)++;											// Increase counter
+			stackPop(s);    // Remove last operand in the stack
+			postExpr[*postLen] = topChar;   // Add it to output string
+			(*postLen)++;   // Increase counter
 			stackTop(s, &topChar);
 		}
 		
 		
-		stackPop(s);												// Remove left bracket from the stack
+		stackPop(s);    // Remove left bracket from the stack
 	}
 }
 
@@ -75,19 +77,19 @@ void untilLeftPar (tStack* s, char* postExpr, unsigned* postLen) {
 ** výrazu a taktéž ukazatel na první volné místo, do kterého se má zapisovat, 
 ** představuje parametr postLen, výstupním polem znaků je opět postExpr.
 */
-void doOperation (tStack* s, char c, char* postExpr, unsigned* postLen) {		
-	if(stackEmpty(s))																// When stack is empty
+void doOperation ( tStack* s, char c, char* postExpr, unsigned* postLen ) {		
+	if(stackEmpty(s))       // When stack is empty
 	{
-		stackPush(s, c);															// Put operand in stack no matter what
+		stackPush(s, c);        // Put operand in stack no matter what
 		return;
 	}
 	
 	// Getting an operand on the top of the stack
 	char topChar;
 	stackTop(s, &topChar); 
-	if(topChar == '(') 															// If its left bracket
+	if(topChar == '(')      // If its left bracket
 	{
-		stackPush(s, c);															// Put operand in stack no matter what
+		stackPush(s, c);        // Put operand in stack no matter what
 		return;		
 	}
 	
@@ -96,34 +98,34 @@ void doOperation (tStack* s, char c, char* postExpr, unsigned* postLen) {
 		// Cases with low priority operands
 		case '+':
 		case '-':
-			stackPop(s);																// Remove last operand in the stack
-			postExpr[*postLen] = topChar;								// Add it to output string
-			(*postLen)++;																// Increase counter
-			doOperation(s, c, postExpr, postLen);				// Repeat the cycle			
+			stackPop(s);    // Remove last operand in the stack
+			postExpr[*postLen] = topChar;   // Add it to output string
+			(*postLen)++;   // Increase counter
+			doOperation(s, c, postExpr, postLen);   // Repeat the cycle			
 			break;
 			
 		// Cases with high priority operands
 		case '*':
 		case '/':
-			if(topChar == '*' || topChar == '/')				// If there is an operator with higher or the same priority on the top of the stack
+			if(topChar == '*' || topChar == '/')    // If there is an operator with higher or the same priority on the top of the stack
 			{
-				stackPop(s);															// Remove it
-				postExpr[*postLen] = topChar;							// Add it to output string
-				(*postLen)++;															// Increase counter
-				doOperation(s, c, postExpr, postLen);			// Repeat the cycle
+				stackPop(s);    // Remove it
+				postExpr[*postLen] = topChar;   // Add it to output string
+				(*postLen)++;   // Increase counter
+				doOperation(s, c, postExpr, postLen);   // Repeat the cycle
 			}
 			else
 			{
-				stackPush(s, c);													// Put operand in the stack
+				stackPush(s, c);        // Put operand in the stack
 			}
 			break;
 		
 		// Cases with brackets
 		case '(':
-			stackPush(s, c);														// Always put left bracket in the stack
+			stackPush(s, c);        // Always put left bracket in the stack
 			break;
 		case ')':
-			untilLeftPar(s, postExpr, postLen);					// Process all operators inside the brackets
+			untilLeftPar(s, postExpr, postLen);     // Process all operators inside the brackets
 			break;
 	}
 }
@@ -175,34 +177,32 @@ void doOperation (tStack* s, char c, char* postExpr, unsigned* postLen) {
 char* infix2postfix (const char* infExpr) {
 	
 	// Creating output string variables
-	unsigned postLen = 0;																// Creating counter of characters
-	char* postExpr = malloc(sizeof(char)*MAX_LEN);			// Allocating memory for output string
-	if(postExpr == NULL)																// Check if allocation was successful
+	unsigned postLen = 0;   // Creating counter of characters
+	char* postExpr = malloc(sizeof(char)*MAX_LEN);  // Allocating memory for output string
+	if(postExpr == NULL)    // Check if allocation was successful
 		return NULL;
 
 	// Creating stack for opertators
-	tStack* s;																					// TO-DO this looks weird, do it inside one line
-	s = (tStack*) malloc(sizeof(tStack));								// Allocating memory for output string
-	if(s == NULL																				// Check if allocation was successful
+	tStack* s = (tStack*) malloc(sizeof(tStack));   // Allocating memory for output string
+	if(s == NULL)   // Check if allocation was successful
 	{
-		free(postExpr);																		// Free the previous allocation
+		free(postExpr); // Free the previous allocation
 		return NULL;
 	}
-	stackInit(s);																				// Init the stack
+	stackInit(s);   // Init the stack
 	
 	// Processing characters from input string
 	char c;
-	for(int i = 0; (c = infExpr[i]) != '='; i++)				// For each character untill '=' is found
+	for(int i = 0; (c = infExpr[i]) != '='; i++)    // For each character untill '=' is found
 	{
-		DEBUG_PRINT("[DBG]#processing: %c\n",c);
-		if(c == '+' || c == '-' || c == '*' || c == '/' || c == '(' || c == ')')			// Check if character is operator
+		if(c == '+' || c == '-' || c == '*' || c == '/' || c == '(' || c == ')')        // Check if character is operator
 		{		
-			doOperation(s, c, postExpr, &postLen);					// Process operator
+			doOperation(s, c, postExpr, &postLen);  // Process operator
 		}
 		else
 		{
-			postExpr[postLen] = c;													// Put operand in the output string
-			postLen++;																			// Increase the character counter
+			postExpr[postLen] = c;  // Put operand in the output string
+			postLen++;      // Increase the character counter
 		}
 	}
 	
@@ -210,10 +210,10 @@ char* infix2postfix (const char* infExpr) {
 	while(!stackEmpty(s))
 	{
 		char topChar;
-		stackTop(s, &topChar);														// Get a value from top of the stack
-		stackPop(s);																			// Remove last operator in the stack
-		postExpr[postLen] = topChar;											// Put operator in the output string
-		postLen++;																				// Increase the character counter
+		stackTop(s, &topChar);  // Get a value from top of the stack
+		stackPop(s);    // Remove last operator in the stack
+		postExpr[postLen] = topChar;    // Put operator in the output string
+		postLen++;      // Increase the character counter
 	}
 	
 	// Add ending characters to the output string
@@ -221,7 +221,7 @@ char* infix2postfix (const char* infExpr) {
 	postExpr[postLen] = '\0';
 	
 	free(s);
-	// TO-DO free postExpr
+
 	return postExpr;
 }
 
