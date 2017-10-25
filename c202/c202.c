@@ -1,3 +1,4 @@
+
 /* ******************************* c202.c *********************************** */
 /*  Předmět: Algoritmy (IAL) - FIT VUT v Brně                                 */
 /*  Úkol: c202 - Zásobník znaků v poli                                        */
@@ -36,7 +37,7 @@
 int STACK_SIZE = MAX_STACK;
 int solved;
 
-void stackError (int error_code) {
+void stackError ( int error_code ){
 /*   ----------
 ** Vytiskne upozornění, že došlo k chybě při práci se zásobníkem.
 **
@@ -49,7 +50,7 @@ void stackError (int error_code) {
 	err_flag = 1;
 }
 
-void stackInit (tStack* s) {
+void stackInit ( tStack* s ) {
 /*   ---------
 ** Provede inicializaci zásobníku - nastaví vrchol zásobníku.
 ** Hodnoty ve statickém poli neupravujte - po inicializaci zásobníku
@@ -60,16 +61,16 @@ void stackInit (tStack* s) {
 ** předpokládejte, že tato situace nenastane. 
 */
 
-	if(s == NULL)									// If the stack is not allocated
+	if(s == NULL)   // If the stack is not allocated
 	{
-		stackError(SERR_INIT);			// Throw an error
+		stackError(SERR_INIT);  // Throw an error
 		return;
 	}
 	
-	s->top = -1;									// Initialize top of the stack
+	s->top = -1;    // Initialize top of the stack
 }
 
-int stackEmpty (const tStack* s) {
+int stackEmpty ( const tStack* s ) {
 /*  ----------
 ** Vrací nenulovou hodnotu, pokud je zásobník prázdný, jinak vrací hodnotu 0.
 ** Funkci implementujte jako jediný příkaz. Vyvarujte se zejména konstrukce
@@ -79,7 +80,7 @@ int stackEmpty (const tStack* s) {
 	return (s->top == -1) ? 1 : 0; 
 }
 
-int stackFull (const tStack* s) {
+int stackFull ( const tStack* s ) {
 /*  ---------
 ** Vrací nenulovou hodnotu, je-li zásobník plný, jinak vrací hodnotu 0.
 ** Dejte si zde pozor na častou programátorskou chybu "o jedničku"
@@ -92,7 +93,7 @@ int stackFull (const tStack* s) {
 	return (s->top == STACK_SIZE-1) ? 1 : 0; 
 }
 
-void stackTop (const tStack* s, char* c) {
+void stackTop ( const tStack* s, char* c ) {
 /*   --------
 ** Vrací znak z vrcholu zásobníku prostřednictvím parametru c.
 ** Tato operace ale prvek z vrcholu zásobníku neodstraňuje.
@@ -102,17 +103,17 @@ void stackTop (const tStack* s, char* c) {
 ** Pro ověření, zda je zásobník prázdný, použijte dříve definovanou
 ** funkci stackEmpty.
 */
-	if(stackEmpty(s))						// If the stack is empty
+	if(stackEmpty(s))       // If the stack is empty
 	{
-		stackError(SERR_TOP);			// Throw an error
+		stackError(SERR_TOP);   // Throw an error
 		return;
 	}
 
-	*c = s->arr[s->top];				// Put value of the emelent on top of the stack into pointer 'c'
+	*c = s->arr[s->top];     // Put value of the emelent on top of the stack into pointer 'c'
 }
 
 
-void stackPop (tStack* s) {
+void stackPop ( tStack* s ) {
 /*   --------
 ** Odstraní prvek z vrcholu zásobníku. Pro ověření, zda je zásobník prázdný,
 ** použijte dříve definovanou funkci stackEmpty.
@@ -124,15 +125,15 @@ void stackPop (tStack* s) {
 ** jednoduchost neděláme.
 ** 
 */
-	if(!stackEmpty(s))				// If the stack is not empty
+	if(!stackEmpty(s))      // If the stack is not empty
 	{
-		s->arr[s->top] = 0;			// For printing stack as string (easier debugging)
-		(s->top)--;							// Decrease index of top of the stack
+		s->arr[s->top] = 0;     // For printing stack as string (easier debugging)
+		(s->top)--;     // Decrease index of top of the stack
 	}
 }
 
 
-void stackPush (tStack* s, char c) {
+void stackPush ( tStack* s, char c ) {
 /*   ---------
 ** Vloží znak na vrchol zásobníku. Pokus o vložení prvku do plného zásobníku
 ** je nekorektní a ošetřete ho voláním procedury stackError(SERR_PUSH).
@@ -140,14 +141,14 @@ void stackPush (tStack* s, char c) {
 ** Pro ověření, zda je zásobník plný, použijte dříve definovanou
 ** funkci stackFull.
 */
-	if(stackFull(s))							// If the stack is full
+	if(stackFull(s))        // If the stack is full
 	{
-		stackError(SERR_PUSH);			// Throw an error
+		stackError(SERR_PUSH);  // Throw an error
 		return;
 	}
 	
-	(s->top)++;										// Increase index of the top of the stack
-	s->arr[s->top] = c;						// Add value to the stack
+	(s->top)++;     // Increase index of the top of the stack
+	s->arr[s->top] = c;     // Add value to the stack
 }
 
 /* Konec c202.c */
